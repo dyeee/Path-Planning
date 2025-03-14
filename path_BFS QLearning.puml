@@ -1,0 +1,31 @@
+@startuml
+
+skinparam dpi 150
+
+rectangle "Main Program" {
+    () "train_q_learning()" as train
+    () "test_q_learning()" as test
+}
+
+rectangle "Environment Setup" {
+    () "generate_fixed_board()" as generate_board
+    () "generate_weighted_goal()" as generate_goal
+    () "bfs_initialize_qtable()" as bfs_qtable
+}
+
+rectangle "Rendering" {
+    () "draw_map()" as draw
+}
+
+train -> generate_board : "生成固定迷宮"
+train -> generate_goal : "選擇終點"
+train -> bfs_qtable : "BFS 計算最短路徑"
+train -> train : "Q-learning 訓練"
+train -> test : "訓練完成後進行測試"
+
+test -> generate_board : "重新加載迷宮"
+test -> generate_goal : "隨機選擇新終點"
+test -> draw : "顯示 AI 走過的路徑"
+
+draw <- test : "更新地圖"
+@enduml
